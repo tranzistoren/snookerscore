@@ -1,0 +1,211 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+var player=0;
+var bestof=5;
+var currbreak=0;
+var pts = [0,0];
+var frames = [0,0];
+var maxbreak = [0,0];
+var break_balls = new Array(8).fill(0);
+
+function reset(p){
+	player=0;
+	currbreak=0;
+	pts = [0,0];
+	break_balls.fill(0);
+
+	if(p == "all"){
+		frames = [0,0];
+		maxbreak = [0,0];
+	}
+
+	update();
+}
+
+function update(){
+	$("#pts_left").text(pts[0]);
+	$("#pts_right").text(pts[1]);
+
+	$("#frames_left").text(frames[0]);
+	$("#frames_right").text(frames[1]);
+
+	$("#bestof").text("("+bestof+")");
+
+	if(player){
+		$("#ball_left").css("visibility", "hidden");
+		$("#ball_right").css("visibility", "");
+	}
+	else{
+		$("#ball_left").css("visibility", "");
+		$("#ball_right").css("visibility", "hidden");
+	}
+
+	if(maxbreak[player] < currbreak)
+		maxbreak[player] = currbreak;
+
+
+
+	if(currbreak > 1){
+		$("#break_balls").empty();
+		$("#break_num").empty();
+		$("#break").css("margin-left", (2+55*player)+"%" );
+		$("#break_num").text("Break: "+currbreak);
+		for (var i = 0; i< break_balls.length ; i++){
+			if(break_balls[i] > 0)
+				$("#break_balls").append("<div class=\"ball ball"+i+"\">"+break_balls[i]+"</span>");	
+		}
+	}
+	else{
+		$("#break_balls").empty();
+		$("#break_num").empty();
+	}
+
+	$("#info").html("P1 max break="+maxbreak[0]+"<br />"+"P2 max break="+maxbreak[1]);
+}
+
+function switchp(p){
+	if(p != player){
+		currbreak = 0;
+		break_balls.fill(0)
+	}
+
+	if(p == undefined)
+		player = !player | 0;
+	else
+		player = p
+
+	update();
+}
+
+
+$(document).ready(function(){
+	switchp(0);
+	update();
+
+	$("#switch").click( function() { switchp(); });
+
+	$(".ballbtn").click( function(){
+		var v = parseInt($(this).attr("value"))
+		if(v > 0){
+			pts[player] += v;
+			currbreak += v;
+			break_balls[v]++;
+		}
+		else{
+			currbreak = 0;
+			break_balls.fill(0)
+			pts[!player | 0] += -v;
+		}
+		update();
+	 });
+
+	$(".framebtn").click( function(){
+		var p = parseInt($(this).attr("value"))
+		frames[p]++;
+		update();
+	 });
+
+	$(".setpts").click( function(){
+		var p = parseInt($(this).attr("value"));
+		pts[p] = parseInt($("#numpts").val());
+		update();
+	 });
+
+	$("#setbestof").click( function(){
+		bestof = parseInt($("#numbestof").val());
+		update();
+	 });
+
+
+	$("#setnames").click( function(){
+		$("#name_left").text($("#p1name").val())
+		$("#name_right").text($("#p2name").val())
+		update();
+	 });
+
+	$(".reset").click( function(){
+		reset($(this).attr("value"));
+		update();
+	 });
+
+});
+
+</script>
+
+<div id="scores_main">
+	<div id="break">
+		<span id="break_num"></span><span id="break_balls"></span>
+	</div>
+
+ 	<div id="scores_bar">
+		<div id="namescore_left" class="namescore">
+			<span class="nowplaying" id="ball_left">⬤</span>
+			<span class="name" id="name_left">Player</span>
+			<span class="pts" id="pts_left">0</span>
+		</div>
+		<div id="score_mid">
+			<span class="frames" id="frames_left">0</span>
+			<span id="bestof">(0)</span>
+			<span class="frames" id="frames_right">0</span>
+		</div>
+		<div id="namescore_right" class="namescore">
+			<span class="pts" id="pts_right">0</span>
+			<span class="name" id="name_right">Player</span>
+			<span class="nowplaying" id="ball_right">⬤</span>
+		</div>
+	</div>
+</div>
+
+<p id="info"></span>
+
+<div id=buttons>
+<!-- 	<button id="player1">Player 1</button>
+	<button id="player2">Player 2</button>
+	<br />
+ -->
+ 	<button id="switch">Switch player</button>
+	<br />
+ 	<button class="ballbtn" value="1">Red</button>
+	<button class="ballbtn" value="2">Yellow</button>
+	<button class="ballbtn" value="3">Green</button>
+	<button class="ballbtn" value="4">Brown</button>
+	<button class="ballbtn" value="5">Blue</button>
+	<button class="ballbtn" value="6">Pink</button>
+	<button class="ballbtn" value="7">Black</button>
+	<button class="ballbtn" value="-4">Foul 4</button>
+	<button class="ballbtn" value="-5">Foul 5</button>
+	<button class="ballbtn" value="-6">Foul 6</button>
+	<button class="ballbtn" value="-7">Foul 7</button>
+	<br />
+
+ 	<button class="framebtn" value="0">P1 frame</button>
+ 	<button class="framebtn" value="1">P2 frame</button>
+	<br />
+	<br />
+	<hr>
+	<br />
+
+	Player 1: <input type = "text" id="p1name" value="Player 1" />
+	<br />
+	Player 2: <input type = "text" id="p2name" value="Player 2" />
+	<br />
+	<button id="setnames">Set</button>
+	<br />
+	<br />
+
+
+	Best of: <input type = "text" id="numbestof" value="5" />
+	<button id="setbestof">Set</button>
+	<br />
+
+	Set points: <input type = "text" id="numpts" value="0" />
+	<button class="setpts" value="0">Set P1</button>
+	<button class="setpts" value="1">Set P2</button>
+	<br />
+	<button class="reset">Reset frame</button>
+	<br />
+	<button class="reset" value="all">Reset all</button>
+
+</div>

@@ -1,0 +1,142 @@
+html {
+	font-family: "Arial";
+}
+
+#scores_main {
+	height: 96px;
+	width: 800px;
+}
+
+#scores_bar {
+	width: 100%;
+	height: 64px;
+    display: flex;
+    justify-content: center;
+}
+
+.namescore {
+	background-color: #111;
+	font-size: 1.5em ;
+	color: #ddd;
+	white-space:nowrap;
+	width: 45%;
+
+	display: inline-block;
+	height: 100% ;
+
+	display:flex;
+	align-items:center;
+}
+
+.pts {
+	font-size: 1.75em;
+	font-weight: bold;
+}
+
+#score_mid {
+	background-color: #ddd;
+	color: 000;
+	text-align: center;
+	width: 10% ;
+	height: 64px;
+	display: flex;
+	align-items:center;
+	justify-content: center;
+
+	/*display:flex;*/
+	/*align-items:center;*/
+}
+
+#pts_left,#name_right {
+	margin-left: auto;
+	margin-right: 5px;
+}
+
+#pts_right,#name_left {
+	margin-left: 5px;
+}
+
+.namescore,#score_mid {
+  height: 100%;
+  padding: 5px;
+}
+
+.frames {
+	font-size: 2em;
+	font-weight: bold;
+	margin-bottom: 20%;
+}
+
+#bestof {
+	font-weight: bold;
+	margin-top: auto;
+	margin-bottom: 5px;
+}
+
+#info{
+	margin-top: 30px;
+}
+
+.nowplaying {
+	margin-left: 8px;
+	margin-right: 8px;
+	color: #eee;
+}
+
+#break {
+	height: 32px;
+	width: 40%;
+	/*font-size: 0.75em;*/
+	display: flex;
+	align-items:center;
+	/*justify-content: center;*/
+}
+
+#break_balls {
+	margin-left: auto;
+}
+
+.ball {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	font-size: 20px;
+	line-height: 28px;
+	text-align: center;
+	display: inline-block;
+	margin-left: 4px
+}
+
+.ball1 {
+	background: #cc0000;
+}
+
+.ball2 {
+	background: #ffcc00;
+}
+
+.ball3 {
+	background: #00cc00;
+}
+
+.ball4 {
+	background: #663300;
+	color: #ddd;
+}
+
+.ball5 {
+	background: #0066ff;
+}
+
+.ball6 {
+	background: #ff6699;
+}
+
+.ball7 {
+	background: #000;
+	color: #ddd;
+}
+
+button,input {
+	margin-top: 10px;
+}
